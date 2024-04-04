@@ -33,31 +33,44 @@ d3.json(url).then(function(data){
     //         L.marker([dfgeometry.coordinates[1], dfgeometry.coordinates[0]]).addTo(the_map);
     // };
 
-    smthn = L.choropleth(data, {
-        valueProperty : "ids", 
-        scale : ["#ffffb2", "#b10026"], 
-        steps : 5,
-        mode : "q",
-        style : {
-          // Border color
-          color: "#fff",
-          weight: 1,
-          fillOpacity: 0.8
-        },
-        onEachFeature : function(feature, layer){
-            layer.bindPopup("<strong> Earthquake Magnitude: " + feature.properties.mag + "</strong>" 
-            + "<br /><br />" + "Located Around: " + feature.properties.place)
-        }
-        // onEachFeature: function(feature, layer) {
-        //     layer.bindPopup("<strong>" + feature.properties.NAME + "</strong><br /><br />Estimated employed population with children age 6-17: " +
-        //       feature.properties.DP03_16E + "<br /><br />Estimated Total Income and Benefits for Families: $" + feature.properties.DP03_75E);
-        //   }
-        // }).addTo(myMap);
-      
+    // smthn = L.choropleth(data, {
+    //     valueProperty : "ids", 
+    //     scale : ["#ffffb2", "#b10026"], 
+    //     steps : 5,
+    //     mode : "q",
+    //     style : {
+    //       // Border color
+    //       color: "#fff",
+    //       weight: 1,
+    //       fillOpacity: 0.8
+    //     },
+    //     onEachFeature : function(feature, layer){
+    //         layer.bindPopup("<strong> Earthquake Magnitude: " + feature.properties.mag + "</strong>" 
+    //         + "<br /><br />" + "Located Around: " + feature.properties.place)
+    //     }
 
-    }).addTo(the_map)
+    // }).addTo(the_map)
 
+        function find_rad(rad){
+            new_rad = rad*2000
+            return new_rad
+        };
+
+        for (i = 0; i < 1500; i++) {
+
+        dfgeometry = dfeatures[i].geometry;
+
+        if (dfeatures[i].geometry)
+            L.circle([dfgeometry.coordinates[1], dfgeometry.coordinates[0]], {
+                fillOpacity : 0.25,
+                radius: find_rad(dfgeometry.coordinates[2])
+            }).bindPopup("<strong> Earthquake Magnitude: "+ dfgeometry.coordinates[2] + "</strong>").addTo(the_map)
+            //L.marker([dfgeometry.coordinates[1], dfgeometry.coordinates[0]]).addTo(the_map);
+    };
 });
+
+//need to change color, make a function for color and fillColor
+//also add a legend, somehow, can do it!
 
 
 
